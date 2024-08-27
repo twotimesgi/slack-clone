@@ -8,6 +8,9 @@ export default convexAuthNextjsMiddleware((req) => {
         return nextjsMiddlewareRedirect(req, "/auth");
     }
 
+    if(isPublicPage(req) && isAuthenticatedNextjs()){
+        return nextjsMiddlewareRedirect(req, "/");
+    }
     //TODO: redirect to /dashboard if user is already authenticated
 });
  
