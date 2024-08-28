@@ -21,9 +21,12 @@ export const CreateWorkspaceModal = () => {
         e.preventDefault();
         mutate({name}, {
             onSuccess: (id) => {
-                toast.success('Workspace created');
+                toast.success('Workspace created.');
                 router.replace(`/workspace/${id}`);
                 handleClose();
+            },
+            onError: () => {
+                toast.error('Failed to create workspace. Try again.');
             }
         })
     }
