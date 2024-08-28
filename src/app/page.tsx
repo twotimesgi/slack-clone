@@ -23,7 +23,6 @@ export default function Home() {
   }
   , [workspaceId, isLoading, open, setOpen]);  
   return (
-      <div>      <UserButton></UserButton>
-</div>
+      <div></div>
   );
 }
