@@ -98,6 +98,6 @@ export const PreferencesModal = ({ open, setOpen, initialValue }: PreferencesMod
             </div>
 
         </DialogContent>
-    </Dialog>;
+    </Dialog>
     </>
 };

@@ -5,14 +5,17 @@ import { ChevronDown, ListFilter, SquarePen } from "lucide-react";
 import { Hint } from "@/components/hint";
 import { PreferencesModal } from "./preferences-modal";
 import { useState } from "react";
-
+import { InviteModal } from "./invite-modal";
 interface WorkspaceHeaderProps {
     workspace: Doc<"workspaces">;
     isAdmin: boolean;
 }
 export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) => {
     const [open, setOpen] = useState(false);
+    const [openInvite, setOpenInvite] = useState(false);
+
     return <>
+    <InviteModal open={openInvite} setOpen={setOpenInvite} name={workspace.name} joinCode={workspace.joinCode}/>
     <PreferencesModal open={open} setOpen={setOpen} initialValue={workspace.name}/>
     <div className="flex items-center justify-between px-4 h-[49px] gap-0.5">
         <DropdownMenu>
@@ -34,7 +37,7 @@ export const WorkspaceHeader = ({ workspace, isAdmin }: WorkspaceHeaderProps) =>
                     </DropdownMenuItem>
                     {isAdmin && <>
                         <DropdownMenuSeparator/>
-                    <DropdownMenuItem className="cursor-pointer py-2" onClick={() => {}}>
+                    <DropdownMenuItem className="cursor-pointer py-2" onClick={() => setOpenInvite(true)}>
                         <p className="truncate">Invite people to {workspace.name}</p>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator/>

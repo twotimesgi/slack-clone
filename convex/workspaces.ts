@@ -50,6 +50,11 @@ export const create = mutation({
             userId,
             role: "admin"
         });
+
+        await ctx.db.insert("channels", {
+            workspaceId: workdspaceId,
+            name: "general"
+        });
         
         return workdspaceId;
     }
@@ -124,4 +129,27 @@ export const remove = mutation({
         await ctx.db.delete(args.id);
         return args.id;
         },
+});
+
+export const resetCode = mutation({
+    args: {
+        workspaceId: v.id("workspaces"),
+    },
+    handler: async (ctx, args) => {
+        const userId = await auth.getUserId(ctx);
+        if(!userId) {
+           throw new Error("Not authenticated");
+        }
+
+        const member = await ctx.db.query("members").withIndex("by_workspace_id_and_user_id" , (q) => q.eq("workspaceId", args.workspaceId ).eq("userId", userId)).unique();
+        if(!member){
+            throw new Error("Not a member of this workspace");
+        }else if(member.role !== "admin"){
+            throw new Error("Only admins can update workspace");
+        }
+
+        const joinCode = generateCode();
+        await ctx.db.patch(args.workspaceId, {joinCode});
+        return args.workspaceId;
+    }
 });
