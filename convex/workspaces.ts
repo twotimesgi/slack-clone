@@ -1,6 +1,11 @@
 import { mutation, query } from "./_generated/server";
 import {v} from "convex/values";
 import {auth} from "./auth";
+
+const generateCode = () => {
+    const code = Array.from({length: 6}, () => "0123456789abcdefghijklmnopqrstuvwxyz"[Math.floor(Math.random() * 36)]).join("");
+    return code;
+}
 export const get = query({
     args: {},
     handler: async (ctx) => {
@@ -8,6 +13,8 @@ export const get = query({
         if(!userId) {
          return [];
         }
+
+    
 
         const members = await ctx.db.query("members").withIndex("by_user_id", (q) => q.eq("userId", userId)).collect();
         const workspaceIds = members.map((m) => m.workspaceId);
@@ -31,7 +38,7 @@ export const create = mutation({
         if(!userId) {
            throw new Error("Not authenticated");
         }
-        const joinCode = "123456"
+        const joinCode = generateCode();
         const workdspaceId = await ctx.db.insert("workspaces", {
             name: args.name,
             userId,
@@ -58,6 +65,10 @@ export const getById = query({
            throw new Error("Not authenticated");
         }
 
+        const member = await ctx.db.query("members").withIndex("by_workspace_id_and_user_id" , (q) => q.eq("workspaceId", args.id ).eq("userId", userId)).unique();
+        if(!member){
+            return null;
+        }
         return await ctx.db.get(args.id);
     }
 });
