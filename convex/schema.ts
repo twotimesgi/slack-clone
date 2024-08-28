@@ -12,6 +12,6 @@ export default defineSchema({
         workspaceId: v.id("workspaces"),
         userId: v.id("users"),
         role: v.union(v.literal("admin"), v.literal("member")),
-    }),
+    }).index("by_user_id", ["userId"]).index("by_workspace_id", ["workspaceId"]).index("by_workspace_id_and_user_id", ["workspaceId", "userId"]),
 });
 
