@@ -7,6 +7,11 @@ export default defineSchema({
         name: v.string(),
         userId: v.id("users"),
         joinCode: v.string(),
-    })
+    }),
+    members: defineTable({
+        workspaceId: v.id("workspaces"),
+        userId: v.id("users"),
+        role: v.union(v.literal("admin"), v.literal("member")),
+    }),
 });
 
