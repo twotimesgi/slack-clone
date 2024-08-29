@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Id } from "../../../../../convex/_generated/dataModel"
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
-import { useWorkSpaceId } from "@/hooks/use-workspace-id";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 interface UserItemProps {
@@ -29,7 +29,7 @@ const userItemVariants = cva(
 
 
 export const UserItem = ({id, label = "Member", image, variant} : UserItemProps) => {
-    const workspaceId = useWorkSpaceId();
+    const workspaceId = useWorkspaceId();
     const avatarFallback = label.charAt(0).toUpperCase();
  return <Button variant={"transparent"} size="sm" asChild className={cn(userItemVariants({variant: variant}))}>
     <Link href={`/workspace/${workspaceId}/member/${id}`}>

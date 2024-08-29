@@ -7,7 +7,7 @@ import { TrashIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useWorkSpaceId } from "@/hooks/use-workspace-id";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { useRouter } from "next/navigation";
 import { useConfirm } from "@/hooks/use-confirm";
 interface PreferencesModalProps {
@@ -19,7 +19,7 @@ interface PreferencesModalProps {
 export const PreferencesModal = ({ open, setOpen, initialValue }: PreferencesModalProps) => {
     const [value, setValue] = useState(initialValue);
     const [editOpen, setEditOpen] = useState(false);
-    const workspaceId = useWorkSpaceId();
+    const workspaceId = useWorkspaceId();
     
     const { mutate: updateWorkspace, isPending: isUpdatingWorkspace } = useUpdateWorkspace();
     const { mutate: removeWorkspace, isPending: isRemovingWorkspace } = useRemoveWorkspace();

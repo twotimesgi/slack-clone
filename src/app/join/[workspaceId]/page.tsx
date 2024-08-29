@@ -3,7 +3,8 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import  VerificationInput  from "react-verification-input";
 import { useJoin } from "@/features/workspaces/api/use-join";
-import { useWorkSpaceId } from "@/hooks/use-workspace-id";
+import { useWorkspaceId
+ } from "@/hooks/use-workspace-id";
 import { useGetWorkspaceInfo } from "@/features/workspaces/api/use-get-workspace-info";
 import { Loader } from "lucide-react";
 import { toast } from "sonner";
@@ -12,7 +13,7 @@ import { cn } from "@/lib/utils";
 import { useEffect, useMemo } from "react";
 const JoinPage = () => {
     const router = useRouter();
-    const workspaceId = useWorkSpaceId();  
+    const workspaceId = useWorkspaceId();  
     const {data, isLoading} = useGetWorkspaceInfo({workspaceId: workspaceId});
     const {mutate, isPending} = useJoin();
     const isMember = useMemo(() => data?.isMember, [data?.isMember]);

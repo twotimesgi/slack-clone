@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { useWorkSpaceId } from "@/hooks/use-workspace-id";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 import { LucideIcon } from "lucide-react";
 import Link from "next/link";
 import { IconType } from "react-icons/lib";
@@ -30,7 +30,7 @@ interface SidebarItemProps {
 }
 
 export const SidebarItem = ({ icon: Icon, label, id, variant }: SidebarItemProps) => {
-    const workspaceId = useWorkSpaceId();
+    const workspaceId = useWorkspaceId();
     return (
         <Button variant={"transparent"} size={"sm"} className={cn(sidebarItemVariants({variant}))} asChild>
             <Link href={`/workspace/${workspaceId}/channel/${id}`}>

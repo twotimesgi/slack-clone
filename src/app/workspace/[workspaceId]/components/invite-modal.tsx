@@ -3,7 +3,7 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter, DialogDescription } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { CopyIcon, RefreshCcw } from 'lucide-react';
-import { useWorkSpaceId } from '@/hooks/use-workspace-id';
+import { useWorkspaceId } from '@/hooks/use-workspace-id';
 import {toast} from 'sonner';
 interface InviteModalProps {
     open: boolean;
@@ -17,7 +17,7 @@ import { useConfirm } from '@/hooks/use-confirm';
 
 export const InviteModal = ({open, setOpen, name, joinCode}: InviteModalProps) => {
     const [ConfirmDialog, confirm] = useConfirm("Reset invite code", "Are you sure you want to reset the invite code?");
-    const workspaceId = useWorkSpaceId();
+    const workspaceId = useWorkspaceId();
     const {mutate, isPending} = useResetCode();
     const handleCopy = () => {
         const link = `${window.location.origin}/join/${workspaceId}`;
