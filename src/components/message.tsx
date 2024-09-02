@@ -14,6 +14,7 @@ import { Reactions } from "./reactions";
 import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
 import { usePanel } from "@/hooks/use-panel";
+import { ThreadBar } from "./thread-bar";
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
@@ -38,9 +39,10 @@ interface MessageProps {
     threadImage?: string;
     threadTimestamp?: number;
     threadCount?: number;
+    threadName?: string;
 }
 
-export const Message = ({ id, memberId, authorImage, authorName = "Member", isAuthor, reactions, body, image, createdAt, updatedAt, isEditing, isCompact, setEditingId, hideThreadButton, threadImage, threadTimestamp, threadCount }: MessageProps) => {
+export const Message = ({ id, memberId, authorImage, authorName = "Member", threadName, isAuthor, reactions, body, image, createdAt, updatedAt, isEditing, isCompact, setEditingId, hideThreadButton, threadImage, threadTimestamp, threadCount }: MessageProps) => {
     const { mutate: updateMessage, isPending: isUpdatingMessage} = useUpdateMessage();
     const { mutate: removeMessage, isPending: isRemovingMessage} = useRemoveMessage();
     const {mutate: toggleReaction, isPending: isTogglingReaction} = useToggleReaction();
@@ -110,6 +112,7 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", isAu
                         {updatedAt ? (
                             <span className="text-xs text-muted-foreground">(edited)</span>) : null}
                                                 <Reactions data={reactions} onChange={handleReaction}/>
+                                                <ThreadBar count={threadCount} image={threadImage} timestamp={threadTimestamp} name={threadName} onClick={() => onOpenMessage(id)}/>
 
                     </div>
                 }
@@ -156,7 +159,10 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", isAu
                         <span className="text-xs text-muted-foreground">(edited)</span>
                     ) : null}
                     <Reactions data={reactions} onChange={handleReaction}/>
+                    <ThreadBar count={threadCount} image={threadImage} name={threadName} timestamp={threadTimestamp} onClick={() => onOpenMessage(id)}/>
+
                 </div>
+
 }
             </div>
             
