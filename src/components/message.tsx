@@ -13,6 +13,7 @@ import { useConfirm } from "@/hooks/use-confirm";
 import { Reactions } from "./reactions";
 import { useRemoveMessage } from "@/features/messages/api/use-remove-message";
 import { useToggleReaction } from "@/features/reactions/api/use-toggle-reaction";
+import { usePanel } from "@/hooks/use-panel";
 const Renderer = dynamic(() => import("@/components/renderer"), { ssr: false });
 const Editor = dynamic(() => import("@/components/editor"), { ssr: false });
 
@@ -45,6 +46,7 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", isAu
     const {mutate: toggleReaction, isPending: isTogglingReaction} = useToggleReaction();
     const isPending = isUpdatingMessage;
     const [ConfirmDialog, confirm] = useConfirm("Delete message", "Are you sure you want to delete this message? This action cannot be undone.");
+    const {parentMessageId, onOpenMessage, onClose} = usePanel();
 
     const handleReaction = (value: string) => {
         toggleReaction({messageId: id, value}, {
@@ -61,6 +63,9 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", isAu
         removeMessage({id}, {
             onSuccess: () => {
                 toast.success("Message deleted");
+                if(parentMessageId === id) {
+                    onClose();
+                }
             },
             onError: (error) => {
                 toast.error("Failed to delete message");
@@ -111,7 +116,7 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", isAu
 
                 </div>
                 {!isEditing && (
-                <Toolbar isAuthor={isAuthor} isPending={isPending} handleReaction={handleReaction} handleEdit={() => setEditingId(id)} handleThread={() => {}}
+                <Toolbar isAuthor={isAuthor} isPending={isPending} handleReaction={handleReaction} handleEdit={() => setEditingId(id)} handleThread={() =>  onOpenMessage(id)}
                 handleDelete={handleRemove} hideThreadButton={hideThreadButton}
                 />
             )}
@@ -156,7 +161,7 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", isAu
             </div>
             
             {!isEditing && (
-                <Toolbar isAuthor={isAuthor} isPending={isPending} handleReaction={handleReaction} handleEdit={() => setEditingId(id)} handleThread={() => {}}
+                <Toolbar isAuthor={isAuthor} isPending={isPending} handleReaction={handleReaction} handleEdit={() => setEditingId(id)} handleThread={() => onOpenMessage(id)}
                 handleDelete={handleRemove} hideThreadButton={hideThreadButton}
                 />
             )}
