@@ -91,7 +91,7 @@ body,
 
 .ql-editor{
   line-height: 22px !important;
-  padding: 8px 12px !important;
+  padding: 8px 12px;
   color: #1d1c1d !important;
   font-weight: 400 !important;
   font-family: 'Lato', sans-serif !important;
@@ -107,7 +107,7 @@ body,
   text-decoration: underline !important;
 }
 
-.ql-redered{
+.ql-renderer{
   padding: 0 !important;
 }
 
@@ -118,5 +118,10 @@ body,
   font-style: normal !important;
   font-size: 14px !important;
   font-weight: 400 !important;
-  @apply truncate
+  @apply truncate;
+}
+
+.messages_scrollbar{
+  scrollbar-width: thin;
+  scrollbar-color: #dcdcdc #f8f8f8;
 }
