@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import Link  from"next/link";
+import { useUpdateMember } from "../api/use-update-member";
+import { useRemoveMember } from "../api/use-remove-member";
+import { useCurrentMember } from "../api/use-current-member";
+import { useWorkspaceId } from "@/hooks/use-workspace-id";
 interface ProfileProps {
     memberId: Id<"members">;
     onClose: () => void;
@@ -14,6 +18,10 @@ interface ProfileProps {
 export const Profile = ({memberId, onClose} : ProfileProps) => {
     const {data: member, isLoading: isLoadingMember} = useGetMember({id: memberId});
     const avatarFallback = member?.user.name?.charAt(0).toUpperCase() ?? "M";
+    const workspaceId = useWorkspaceId();
+    const {data: currentMember, isLoading: isLoadingCurrentMember } = useCurrentMember({workspaceId})
+    const { mutate: updateMember , isPending: isUpdatingMember} = useUpdateMember()
+    const {mutate: removeMember, isPending: isRemovingMember} = useRemoveMember()
     if (isLoadingMember) {
         return (
             <div className="h-full flex flex-col ">
