@@ -1,4 +1,4 @@
-# Slack Clone - Fullstack Real-time Communication App
+# Slack Clone
 
 An end-to-end fullstack, real-time Slack clone with workspaces, channels, 1:1 conversations, threads, reactions, and member roles. This project is built with modern web technologies and provides a fully functional communication platform.
 
