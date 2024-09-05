@@ -37,8 +37,8 @@ if(!workspace || !member) return (
         <div className="flex flex-col gap-y-2 bg-[#5E2C5F] h-full">
         <WorkspaceHeader isAdmin={member.role === "admin"} workspace={workspace}/>  
         <div className="flex flex-col px-2 mt-3">
-            <SidebarItem label="Threads" icon={MessageSquareText} id="threads"/>
-            <SidebarItem label="Drafts & Sent" icon={SendHorizonal} id="drafts"/>
+            <SidebarItem disabled label="Threads" icon={MessageSquareText} id="threads"/>
+            <SidebarItem disabled label="Drafts & Sent" icon={SendHorizonal} id="drafts"/>
             </div>
             <WorkspaceSection label="Channels" hint="New channel" onNew={member.role === "admin" ? () => setOpen(true) : undefined}>
             {channels?.map(item => <SidebarItem key={item._id} label={item.name} icon={HashIcon} id={item._id} variant={channelId === item._id ? "active" : "default"}/>)}

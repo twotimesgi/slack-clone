@@ -27,13 +27,14 @@ interface SidebarItemProps {
     label: string;
     id: string;
     variant?: VariantProps<typeof sidebarItemVariants>["variant"]
+    disabled?: boolean;
 }
 
-export const SidebarItem = ({ icon: Icon, label, id, variant }: SidebarItemProps) => {
+export const SidebarItem = ({ icon: Icon, label, id, variant, disabled }: SidebarItemProps) => {
     const workspaceId = useWorkspaceId();
     return (
         <Button variant={"transparent"} size={"sm"} className={cn(sidebarItemVariants({variant}))} asChild>
-            <Link href={`/workspace/${workspaceId}/channel/${id}`}>
+            <Link href={disabled ? "" : `/workspace/${workspaceId}/channel/${id}`}>
             <Icon className="size-3.5 shrink-0 mr-1"/>
             <span className="text-sm truncate">{label}</span>
             </Link>
