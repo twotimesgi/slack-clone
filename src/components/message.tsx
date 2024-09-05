@@ -134,10 +134,12 @@ export const Message = ({ id, memberId, authorImage, authorName = "Member", thre
         <div className={cn("flex flex-col gap-2 p-1.5 px-5 hover:bg-gray-100/60 group relative", isEditing && "bg-[#f2c74433] hover:bg-[#f2c74433]", isRemovingMessage && "bg-rose-500/50 transform  transition-all scale-y-0 origin-bottom duration-200")}>
             <div className="flex items-start gap-2">
                 <button onClick={() => onOpenProfile(memberId)}>
-                    <Avatar className=" rounded-md ">
+                    <Avatar className="rounded-md ">
                         <AvatarImage className="rounded-md" src={authorImage} alt={authorName} />
-                        <AvatarFallback className="rounded-md bg-sky-500 text-white text-xs" >{avatarFallback}
-                        </AvatarFallback>                </Avatar>
+                        <AvatarFallback className=" flex rounded-md bg-sky-500 h-full w-full justify-center items-center text-white text-s" >
+                            {avatarFallback}
+                        </AvatarFallback>                
+                    </Avatar>
                 </button>
                 {isEditing ? 
                 <div className="w-full h-full">
