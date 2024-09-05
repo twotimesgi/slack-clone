@@ -1,6 +1,6 @@
 import { Id } from "../../../../convex/_generated/dataModel";
 import { useGetMember } from "../api/use-get-member";
-import { Loader, MailIcon } from "lucide-react";
+import { ChevronDown, Loader, MailIcon } from "lucide-react";
 import { AlertTriangle, XIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -10,18 +10,78 @@ import { useUpdateMember } from "../api/use-update-member";
 import { useRemoveMember } from "../api/use-remove-member";
 import { useCurrentMember } from "../api/use-current-member";
 import { useWorkspaceId } from "@/hooks/use-workspace-id";
+import {toast} from "sonner"
+import { useRouter } from "next/navigation";
+import { useConfirm } from "@/hooks/use-confirm";
+import { DropdownMenuTrigger, DropdownMenu, DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from "@/components/ui/dropdown-menu";
 interface ProfileProps {
     memberId: Id<"members">;
     onClose: () => void;
 }
 
 export const Profile = ({memberId, onClose} : ProfileProps) => {
+    const router = useRouter();
     const {data: member, isLoading: isLoadingMember} = useGetMember({id: memberId});
     const avatarFallback = member?.user.name?.charAt(0).toUpperCase() ?? "M";
     const workspaceId = useWorkspaceId();
     const {data: currentMember, isLoading: isLoadingCurrentMember } = useCurrentMember({workspaceId})
     const { mutate: updateMember , isPending: isUpdatingMember} = useUpdateMember()
     const {mutate: removeMember, isPending: isRemovingMember} = useRemoveMember()
+    const [LeaveDialog, confirmLeave] = useConfirm("Leave workspace", "Are you sure you want to leave this workspace?");
+    const [RemoveDialog, confirmRemove] = useConfirm("Remove member", "Are you sure you want to remove this member?");
+    const [UpdateDialog, confirmUpdate] = useConfirm("Change role", "Are you sure you want to change this member's role?");
+
+    const onRemove = async () => {
+        const ok = await confirmRemove()
+        if(!ok) {
+            return;
+        }
+        removeMember({id: memberId}, {
+            onSuccess: () => {
+                toast.success("Member removed")
+                onClose()
+            },
+            onError: () => {
+                toast.error("Failed to remove member");
+            }
+        })
+    }
+
+    const onLeave = async () => {
+        const ok = await confirmLeave()
+        if(!ok) {
+            return;
+        }
+        removeMember({id: memberId}, {
+
+            onSuccess: () => {
+                router.replace(`/`)
+                toast.success("You left the workspace")
+                onClose()
+            },
+            onError: () => {
+                toast.error("Failed to leave the workspace");
+            }
+        })
+    }
+
+    const onUpdate = async (role : "admin" | "member") => {
+        const ok = await confirmUpdate()
+        if(!ok) {
+            return;
+        }
+
+        updateMember({id: memberId, role: role}, {
+            onSuccess: () => {
+                toast.success("Role updated")
+                onClose()
+            },
+            onError: () => {
+                toast.error("Failed to update the role");
+            }
+        })
+    }
+
     if (isLoadingMember) {
         return (
             <div className="h-full flex flex-col ">
@@ -52,6 +112,10 @@ export const Profile = ({memberId, onClose} : ProfileProps) => {
     }
 
     return (
+        <>
+        <UpdateDialog  />
+        <LeaveDialog  />
+        <RemoveDialog />
 <div className="h-full flex flex-col ">
                 <div className="flex justify-between items-center h-[49px] px-4 border-b">
                     <p className="text-lg font-bold">Profile</p>
@@ -65,6 +129,34 @@ export const Profile = ({memberId, onClose} : ProfileProps) => {
                 </div>
                 <div className="flex flex-col p-4">
 <p className={"text-xl font-bold"}>{member.user.name}</p>
+{currentMember?.role === "admin" && currentMember?._id !== memberId ? (
+    <div className="flex items-center gap-2 mt-4">
+    <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+        <Button variant={"outline"} className="w-full capitalize">
+        {member.role} <ChevronDown className="size-4 ml-2"/>
+    </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent className="w-full">
+        <DropdownMenuRadioGroup value={member.role} onValueChange={(role) => onUpdate(role as "admin" | "member")}>
+            <DropdownMenuRadioItem value="admin">
+                Admin
+            </DropdownMenuRadioItem>
+            <DropdownMenuRadioItem value="member">
+                Member
+            </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+    </DropdownMenuContent>
+    </DropdownMenu>
+    <Button variant={"outline"} onClick={onRemove} className="w-full">
+    Remove
+</Button>
+</div>
+) : currentMember?._id === member._id && currentMember.role !== "admin" ?
+<div className="mt-4">
+<Button variant={"outline"} className="w-full" onClick={onLeave}>
+    Leave
+</Button></div> : null}
                 </div>
                 <Separator />
                 <div className="flex flex-col p-4">
@@ -80,5 +172,6 @@ href={`mailto:${member.user.email}`}>{member.user.email}</Link>
                     </div>
                 </div>
             </div>
+            </>
     )
 }

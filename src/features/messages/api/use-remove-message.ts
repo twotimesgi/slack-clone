@@ -7,7 +7,6 @@ type RequestType = {
     id: Id<"messages">,
 };
 
-//TODO: Add convo ID
 type ResponseType = Id<"messages"> | null;
 
 type Options = {

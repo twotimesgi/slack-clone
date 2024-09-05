@@ -126,6 +126,39 @@ export const remove = mutation({
         for(const member of members) {
             await ctx.db.delete(member._id);
         }
+
+        const [reactions] = await Promise.all([
+            ctx.db.query("reactions").withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id)).collect(),
+        ]);
+
+        for(const reaction of reactions) {
+            await ctx.db.delete(reaction._id);
+        }
+
+        const [channels] = await Promise.all([
+            ctx.db.query("channels").withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id)).collect(),
+        ]);
+
+        for(const channel of channels) {
+            await ctx.db.delete(channel._id);
+        }
+
+        const [messages] = await Promise.all([
+            ctx.db.query("messages").withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id)).collect(),
+        ]);
+
+        for(const message of messages) {
+            await ctx.db.delete(message._id);
+        }
+
+        const [conversations] = await Promise.all([
+            ctx.db.query("conversations").withIndex("by_workspace_id", (q) => q.eq("workspaceId", args.id)).collect(),
+        ]);
+
+        for(const conversation of conversations) {
+            await ctx.db.delete(conversation._id);
+        }
+        
         await ctx.db.delete(args.id);
         return args.id;
         },
