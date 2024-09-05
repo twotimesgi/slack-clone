@@ -1,8 +1,8 @@
-# Fullstack Slack Clone
+# Slack Clone - Fullstack Real-time Communication App
 
 An end-to-end fullstack, real-time Slack clone with workspaces, channels, 1:1 conversations, threads, reactions, and member roles. This project is built with modern web technologies and provides a fully functional communication platform.
 
-## 🚀 [Live Version](https://slack-clone-35jn.vercel.app/)
+## 🚀 [Demo](https://slack-clone-35jn.vercel.app/)
 
 ## Key Features
 
@@ -29,10 +29,6 @@ An end-to-end fullstack, real-time Slack clone with workspaces, channels, 1:1 co
 
 ## Deployment
 
-The app is fully deployed on Vercel. You can access the live version at:
+The app is fully deployed on Vercel. You can access the demo at:
 
-[Slack Clone Live Version](https://slack-clone-35jn.vercel.app/)
-
----
-
-Feel free to explore the platform, create your workspaces, channels, and start communicating in real time! Contributions and feedback are always welcome.
+[Slack Clone Demo](https://slack-clone-35jn.vercel.app/)
